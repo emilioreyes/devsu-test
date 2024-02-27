@@ -1,0 +1,62 @@
+@if(showModal){
+    <app-modal [item]="itemDelete" (confirm)="emmitedDelete($event)" ></app-modal>
+}
+@if(showModalInfo){
+    <app-modal-info [message]="message" (confirm)="onEmmitModalInfo($event)" ></app-modal-info>
+}
+<div class="wrap" >
+    <div class="wrap__search">
+      <input ((blur))="searchText()" [(ngModel)]="text" type="text" name="" id="" placeholder="Search">
+    </div>
+    <a class="wrap__button" (click)="newProduct()">Agregar</a>
+</div>
+
+<div class="wrap__list">
+    <table class="wrap__list--table">
+    
+        <tr class="table__header"> 
+          <th>Logo</th>
+          <th>Nombre</th>
+          <th>Descripcion</th>
+          <th>Fecha liberacion</th>
+          <th>Fecha reestructuracion</th>
+            <th></th>
+        </tr>
+      @for(item of listFilter; track $index){
+        @if($index<selectPagination){
+          <tr>
+              <td><img class="logo" src="{{item.logo}}" alt=""></td>
+              <td>{{item.name}}</td>
+              <td>{{item.description}}</td>
+              <td>{{getFormatDate(item.date_release)}}</td>
+              <td>{{getFormatDate(item.date_revision)}}</td>
+              <td class="controls"> 
+                  <ul class="drop__down">
+                      <li class="drop__down--item">
+                          <a>:</a>
+                      </li>
+                      <li class="drop__down--item">
+                          <a (click)="onEdit(item)">Editar</a>
+                      </li>
+                      <li class="drop__down--item">
+                          <a (click)="onDelete(item)">Eliminar</a>
+                      </li>
+                  </ul>
+              </td>
+          </tr>
+        }
+      }
+        
+      </table>
+      <div class="paginator">
+          <div class="paginator__total">{{list.length}} Resultados</div>
+          <div class="paginator__show">
+            <!-- <span (click)="onNextPage()" class="next">>></span> -->
+            <select [(ngModel)]="selectPagination" name="select">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+              </select>
+          </div>
+      </div>
+</div>
