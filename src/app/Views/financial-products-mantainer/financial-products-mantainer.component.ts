@@ -71,13 +71,9 @@ export class FinancialProductsMantainerComponent implements OnInit{
   searchText(){
     let busqueda = this.text;
     let expresion = new RegExp(`${busqueda}.*`, "i");
-    this.listFilter=this.list.filter(mascota => expresion.test(mascota.id));
+    this.listFilter=this.list.filter(producto => expresion.test(producto.id));
   }
-  onNextPage(){
-     let page=this.list.length/this.selectPagination
-     console.log(page);
-     
-  }
+
   weitTime(time:number) {
     setTimeout(() => {
       this.showModalInfo=false

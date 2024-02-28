@@ -9,7 +9,15 @@ import { ProductResponse } from '../../models/product-model';
   styleUrl: './modal.component.scss'
 })
 export class ModalComponent {
-@Input() item!:ProductResponse
+  value:ProductResponse={
+    id: '',
+    name: '',
+    description: '',
+    logo: '',
+    date_release: '',
+    date_revision: ''
+  }
+@Input() item:ProductResponse=this.value
 @Output() confirm:EventEmitter<boolean>= new EventEmitter()
   onCancel(){
     this.confirm.emit(false)

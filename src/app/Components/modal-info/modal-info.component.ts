@@ -10,9 +10,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class ModalInfoComponent {
   @Input() message:string=''
   @Output() confirm:EventEmitter<boolean>= new EventEmitter()
-  onCancel(){
-    this.confirm.emit(false)
-  }
   onConfirm(){
   this.confirm.emit(true)
   }

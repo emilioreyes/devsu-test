@@ -7,8 +7,7 @@ import { ProductRequest, ProductResponse } from '../models/product-model';
   providedIn: 'root'
 })
 export class ProductsService {
-  http=inject(HttpClient)
-  constructor() { }
+  constructor(private http:HttpClient) { }
 
   getProducts(){
     return this.http.get<ProductResponse[]>(`${environment.API_URL}/products`)

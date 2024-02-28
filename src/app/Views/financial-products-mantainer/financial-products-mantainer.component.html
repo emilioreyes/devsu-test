@@ -6,7 +6,7 @@
 }
 <div class="wrap" >
     <div class="wrap__search">
-      <input ((blur))="searchText()" [(ngModel)]="text" type="text" name="" id="" placeholder="Search">
+      <input (keydown.enter)="searchText()" (blur)="searchText()" [(ngModel)]="text" type="text" name="" id="" placeholder="Search">
     </div>
     <a class="wrap__button" (click)="newProduct()">Agregar</a>
 </div>

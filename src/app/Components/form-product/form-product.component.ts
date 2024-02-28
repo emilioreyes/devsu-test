@@ -13,12 +13,20 @@ import { ModalInfoComponent } from '../modal-info/modal-info.component';
   styleUrl: './form-product.component.scss'
 })
 export class FormProductComponent  implements OnInit , OnChanges{
+  productResponse:ProductResponse={
+    id: '',
+    name: '',
+    description: '',
+    logo: '',
+    date_release: '',
+    date_revision: ''
+  }
   formProduct!:FormGroup
   fb=inject(FormBuilder)
   productService=inject(ProductsService)
   message:string=''
   showModalInfo:boolean=false
-  @Input() productToEdit!:ProductResponse
+  @Input() productToEdit:ProductResponse=this.productResponse
   @Output() product:EventEmitter<ProductRequest>=new EventEmitter()
   ngOnInit(): void {
       this.initForm()
@@ -56,26 +64,32 @@ export class FormProductComponent  implements OnInit , OnChanges{
     let id=this.formProduct.controls['id'].value
     if(id.length>0 && this.formProduct.controls['id'].errors==null){
       this.productService.verification(id).subscribe((res:boolean)=>{
-        const matchingControl = this.formProduct.controls['id'];
-        if(res){
-          matchingControl.setErrors({confirmedValidator: true})
-        }
-        
+        this.setConfirmValidator(res)
       })
+    }
+  }
+  setConfirmValidator(res:boolean){
+    const matchingControl = this.formProduct.controls['id'];
+    if(res){
+      matchingControl.setErrors({confirmedValidator: true})
     }
   }
   validateRelease(){
     let inputDate=this.formProduct.controls['date_release'].value
     let arr = inputDate.split('/')
-    const date=new Date(arr[2],arr[1]-1,arr[0]).toLocaleDateString()
-    
-    const actualDate = new Date().toLocaleDateString()
-    
-    if(date >= actualDate){
-      this.formProduct.controls['date_revision'].setValue(`${arr[0]}/${arr[1]}/${parseInt(arr[2])+ 1}`)
+    if(inputDate.length>2 && arr.length>2){
+      const date=new Date(arr[2],arr[1]-1,arr[0]).toLocaleDateString()
+      
+      const actualDate = new Date().toLocaleDateString()
+      
+      if(date >= actualDate){
+        this.formProduct.controls['date_revision'].setValue(`${arr[0]}/${arr[1]}/${parseInt(arr[2])+ 1}`)
+      }else{
+        const matchingControl = this.formProduct.controls['date_release'];
+          matchingControl.setErrors({fechaError: true})
+      }
     }else{
-      const matchingControl = this.formProduct.controls['date_release'];
-        matchingControl.setErrors({fechaError: true})
+      this.formProduct.controls['date_revision'].setValue("")
     }
   }
 
@@ -128,8 +142,6 @@ export class FormProductComponent  implements OnInit , OnChanges{
     return `${arr[2]}-${month}-${day}`
   }
   onEmmitModalInfo(value:boolean){
-    console.log(value);
-    
     this.showModalInfo=!value
   }
  get id(){
