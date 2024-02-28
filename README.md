@@ -1,6 +1,7 @@
 # Test01
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.1.0.
+node v20.11.0 (npm v10.2.4)
 
 ## Development server
 
